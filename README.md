@@ -4,16 +4,18 @@
 
 # Argus
 
-### 安静地阅读，随手记下想法
+### 免费、轻量、好用的 Markdown 阅读器
 
-轻量的 macOS Markdown 阅读与编辑软件。默认阅读，主动编辑，文件始终在本机。
+为日常阅读 Markdown 而做，也能随手编辑。免费开源，无需账号，文件保存在本机。
 
 [![Version](https://img.shields.io/github/v/release/wylycool/argus?display_name=release&color=blue&label=version)](https://github.com/wylycool/argus/releases/latest)
 [![Platform](https://img.shields.io/badge/platform-macOS%2012%2B%20%C2%B7%20Apple%20Silicon-lightgrey)](https://github.com/wylycool/argus/releases/latest)
-[![Built with Tauri](https://img.shields.io/badge/built%20with-Tauri%202-orange)](https://tauri.app/)
+[![Free](https://img.shields.io/badge/price-免费-brightgreen)](LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/wylycool/argus/total)](https://github.com/wylycool/argus/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/wylycool/argus/ci.yml?branch=main&label=CI)](https://github.com/wylycool/argus/actions/workflows/ci.yml)
+
+[免费下载 macOS 版](https://github.com/wylycool/argus/releases/latest) · **当前安装包约 6 MB**
 
 简体中文 | [English](docs/open-source/README.en.md) | [下载安装](https://github.com/wylycool/argus/releases/latest) | [使用指南](docs/open-source/user-guide.md)
 
@@ -21,7 +23,19 @@
 
 ![Argus 阅读界面](docs/open-source/screenshots/reading.png)
 
-Argus 用来阅读、修改和整理本地 Markdown 文档。它使用系统 WebView，不内置 Chromium；没有账号，也没有云同步。打开文件即可阅读，需要修改时再进入编辑。
+## 为什么做 Argus
+
+我试用过不少 Markdown 阅读软件，有些阅读体验不够顺手，有些基础功能需要付费。我想要的其实很简单：打开一份 `.md`，就能舒服地读下去。
+
+所以我做了 Argus，并把它免费开源。它优先做好阅读：正文清楚、导航顺手、打开即读；需要修改时，再进入编辑。希望它也能成为你愿意留在电脑里的小工具。
+
+## 读 Markdown，简单一点
+
+- **免费使用**：没有订阅或付费解锁，源码以 MIT 许可证公开。
+- **轻量安装**：0.10.0 的 macOS 安装包约 6 MB，使用系统 WebView，不内置 Chromium。
+- **打开即读**：拖入 `.md` 就能阅读，通过大纲、搜索和阅读位置恢复继续上次进度。
+- **按喜好阅读**：八套主题，可调整字号、行距与正文宽度；代码、表格和 Mermaid 图表都能显示。
+- **文件在本机**：无需账号，不做云同步；需要时可编辑、自动保存或另存副本。
 
 ## 下载与安装
 
@@ -46,12 +60,12 @@ shasum -a 256 -c SHA256SUMS.txt
 2. 通过左侧文件列表和大纲阅读；用 `⌘ F` 查找当前文档，`⌘ ⇧ F` 搜索已打开文档。
 3. 点击“编辑”或按 `⌘ E` 开始修改，按需开启实时预览。输入自动保存；点击“保存”回到阅读。
 
-## 主要功能
+## 阅读之外，也能随手编辑
 
 | 功能       | 可以做什么                                                             |
 | ---------- | ---------------------------------------------------------------------- |
 | 阅读与排版 | Markdown、表格、任务列表、代码高亮、可折叠大纲、八套主题与字号行距调整 |
-| 编辑与预览 | CodeMirror 编辑器、撤销重做、分栏预览、双向滚动、窄窗口标签切换        |
+| 编辑与预览 | 撤销重做、实时分栏预览、双向滚动、窄窗口标签切换                       |
 | 文件与草稿 | 新建文档、自动保存、本机未命名草稿、冲突提示、只读文件保护             |
 | 图片与图表 | 插入或粘贴图片、图片放大、Mermaid 绘图与源码查看                       |
 | 搜索与导航 | 文内查找、已打开文档内容搜索、快速切换、最近阅读和返回上一处           |
@@ -59,7 +73,7 @@ shasum -a 256 -c SHA256SUMS.txt
 
 ![Argus 编辑与实时预览](docs/open-source/screenshots/live-preview.png)
 
-截图使用演示文档。完整用法、快捷键与容量限制见[使用指南](docs/open-source/user-guide.md)。
+截图使用当前版本界面与演示文档。完整用法、快捷键与容量限制见[使用指南](docs/open-source/user-guide.md)。
 
 ## 隐私与文件安全
 

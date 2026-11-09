@@ -4,15 +4,25 @@
 
 # Argus
 
-### A quiet place for Markdown
+### A free, lightweight Markdown reader for macOS
 
-A lightweight macOS Markdown reader and editor. Read first, edit when needed, keep your files local.
+Read Markdown comfortably, edit when needed. Free and open source, with no account required. Your files stay on your Mac.
 
 [简体中文](../../README.md) | English | [Download](https://github.com/wylycool/argus/releases/latest)
 
 </div>
 
 ![Argus reading view](screenshots/reading.png)
+
+## Why I built Argus
+
+After trying several Markdown readers, I kept running into an awkward reading experience or basic features behind a paywall. I wanted a small app that would simply open a `.md` file and make it pleasant to read.
+
+That is why I built Argus and made it free and open source. Reading comes first, with an outline, search, themes and reading-position restoration. Editing is there when you need it.
+
+## Free and lightweight
+
+No subscription or paid feature unlocks. The source is available under the MIT license. The 0.10.0 Apple Silicon DMG is about 6 MB and uses the system WebView rather than bundling Chromium.
 
 ## Download
 
