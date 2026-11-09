@@ -1,0 +1,30 @@
+name: 问题反馈 / Bug report
+description: 报告可复现的问题，请先隐去私人内容。
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Argus 版本
+      placeholder: 例如 0.10.0
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: macOS 版本与芯片
+      placeholder: 例如 macOS 15，Apple M2
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 请使用已脱敏的最小示例；不要上传私人文档或草稿。
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 预期结果与实际结果
+    validations:
+      required: true

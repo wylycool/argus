@@ -1,0 +1,307 @@
+.quick-switcher {
+  width: min(600px, calc(100vw - 40px));
+  margin: 10vh auto auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 20px 80px #0003;
+  overflow: hidden;
+  animation: history-enter 0.14s ease-out;
+}
+.quick-search {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 18px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+.quick-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+}
+.quick-results {
+  max-height: min(430px, 55vh);
+  overflow: auto;
+  padding: 7px;
+}
+.quick-results > button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  border-radius: 6px;
+  color: var(--muted);
+}
+.quick-results > button[aria-selected="true"] {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+.quick-results > button > span {
+  flex: 1;
+  min-width: 0;
+}
+.quick-results strong,
+.quick-results small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.quick-results strong {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+.quick-results small {
+  font-size: 11px;
+  line-height: 1.7;
+}
+.quick-results > p {
+  padding: 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.quick-switcher footer {
+  padding: 11px 18px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+.untitled-notice {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 9px 20px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.untitled-notice button {
+  white-space: nowrap;
+  color: var(--accent);
+}
+.print-document {
+  display: none;
+}
+@media print {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  @page {
+    size: A4;
+    /* Match the native NSPrintInfo margins in documents/printing.rs. */
+    margin: 18mm;
+  }
+  html,
+  body,
+  #root,
+  .app {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: white !important;
+    color: #222 !important;
+    color-scheme: light !important;
+  }
+  .app > * {
+    display: none !important;
+  }
+  /* Print in ordinary flow without the screen layout's compositing layers. */
+  .app {
+    display: block !important;
+    transform: none !important;
+  }
+  .app > .print-document {
+    display: block !important;
+  }
+  .print-document.markdown-body {
+    transform: none !important;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #222;
+    --text: #222;
+    --paper: #fff;
+    --muted: #666;
+    --accent: #254e43;
+    --line: #ccc;
+    --code-bg: #f4f4f4;
+    font-size: 11pt;
+    line-height: 1.8;
+  }
+  .print-document h1,
+  .print-document h2,
+  .print-document h3,
+  .print-document h4 {
+    break-after: avoid;
+  }
+  .print-document pre,
+  .print-document img,
+  .print-document .print-section-start,
+  .print-document .mermaid-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .print-document pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: #222;
+    background: #f4f4f4;
+  }
+  .print-document .code-toolbar,
+  .print-document .mermaid-source {
+    display: none;
+  }
+  .print-document .table-scroll {
+    overflow: visible;
+  }
+  .print-document table {
+    width: 100%;
+    table-layout: auto;
+  }
+  .print-document th,
+  .print-document td {
+    overflow-wrap: anywhere;
+  }
+  .print-document svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .print-document a {
+    color: #254e43;
+  }
+  .print-document .hljs {
+    color: #222;
+    background: #f4f4f4;
+  }
+}
+.history-preview-tabs {
+  display: flex;
+  gap: 16px;
+}
+.history-preview-tabs button {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 2px 0;
+}
+.history-preview-tabs button[aria-selected="true"] {
+  color: var(--accent);
+}
+.history-diff {
+  overflow: auto;
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.diff-summary {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 12px 20px;
+  font-size: 11px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.diff-chunk {
+  display: flex;
+  border-left: 2px solid transparent;
+}
+.diff-chunk > span {
+  width: 20px;
+  flex-shrink: 0;
+  padding: 8px 0;
+  text-align: center;
+}
+.history-diff .diff-chunk pre {
+  padding: 8px 10px;
+  margin: 0;
+  overflow: visible;
+  flex: 1;
+  min-width: 0;
+}
+.diff-chunk.added {
+  background: color-mix(in srgb, #42a277 13%, transparent);
+  border-left-color: #42a277;
+}
+.diff-chunk.removed {
+  background: color-mix(in srgb, #ca6767 13%, transparent);
+  border-left-color: #ca6767;
+}
+.history-diff > p {
+  padding: 22px;
+  color: var(--muted);
+}
+.history-management {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  background: var(--sidebar);
+}
+.history-management p {
+  flex: 1;
+  min-width: 200px;
+  margin: 0;
+  line-height: 1.8;
+}
+.history-management button {
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--accent);
+}
+@media print {
+  .print-document [class*="hljs-"] {
+    color: #333 !important;
+  }
+  .print-document .hljs-comment,
+  .print-document .hljs-quote {
+    color: #666 !important;
+  }
+}
+@media print {
+  .print-document .mermaid-stage {
+    max-height: none !important;
+    overflow: visible !important;
+    min-height: 0;
+    display: block;
+    padding: 12px;
+  }
+  .print-document .code-block {
+    overflow: visible !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .print-document h1,
+  .print-document h2,
+  .print-document h3,
+  .print-document h4 {
+    page-break-after: avoid;
+  }
+  .print-document p:has(> img) {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

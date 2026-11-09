@@ -1,0 +1,228 @@
+.markdown-editor {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  color: var(--text);
+  background: var(--paper);
+  animation: page-enter 0.2s ease-out;
+}
+.markdown-editor .cm-editor {
+  outline: none;
+}
+.markdown-editor .cm-content {
+  caret-color: var(--accent);
+}
+.markdown-editor .cm-lineNumbers .cm-gutterElement {
+  padding-left: 14px;
+  padding-right: 12px;
+  min-width: 42px;
+  font-size: 11px;
+}
+.markdown-editor .cm-tooltip {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.markdown-editor .cm-textfield {
+  color: var(--text);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.markdown-editor .cm-button {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.markdown-editor .cm-search {
+  font-size: 12px;
+  padding: 10px;
+}
+.edit-button,
+.finish-edit-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 6px;
+}
+.edit-button {
+  color: var(--muted);
+}
+.edit-button:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+.finish-edit-button {
+  background: var(--accent);
+  color: var(--paper);
+}
+.finish-edit-button:hover {
+  filter: brightness(1.08);
+}
+.save-status {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.save-status[data-state="error"],
+.save-status[data-state="conflict"] {
+  color: var(--error);
+}
+.editing-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.editor-surface {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.editor-notice {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 11px 20px;
+  background: var(--error-bg);
+  color: var(--error);
+  font-size: 12px;
+  line-height: 1.7;
+  border-bottom: 1px solid var(--line);
+}
+.editor-notice > span {
+  flex: 1;
+  min-width: 150px;
+  overflow-wrap: anywhere;
+}
+.editor-notice button {
+  padding: 3px 8px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.editor-notice button:hover {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.draft-notice {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  background: #0005;
+  padding: 24px;
+}
+.confirm-dialog {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  max-width: 420px;
+  padding: 24px;
+  box-shadow: 0 16px 70px #0003;
+}
+.confirm-dialog h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.confirm-dialog p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 0 0 20px;
+}
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.confirm-actions button {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.confirm-actions .confirm-primary {
+  background: var(--accent);
+  color: var(--paper);
+  border-color: var(--accent);
+}
+.confirm-actions button:disabled {
+  opacity: 0.5;
+}
+.opened-file-dirty {
+  color: var(--accent);
+  font-size: 12px;
+  line-height: 1;
+}
+.edit-context {
+  color: var(--accent);
+  font-size: 10px;
+  margin-left: 3px;
+}
+@media (max-width: 1100px) {
+  .editing-actions .save-status {
+    max-width: 90px;
+    overflow: hidden;
+  }
+  .editing-actions {
+    gap: 5px;
+  }
+}
+@media (max-width: 760px) {
+  .edit-button span {
+    display: none;
+  }
+  .edit-button {
+    padding: 7px;
+  }
+  .save-status .save-status-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .finish-edit-button {
+    padding: 7px;
+  }
+  .editing-actions {
+    gap: 3px;
+  }
+  .markdown-editor .cm-content {
+    padding: 24px 16px 60px;
+  }
+}
+.save-status {
+  min-width: 82px;
+}
+@media (max-width: 760px) {
+  .editing-actions .save-status {
+    min-width: 14px;
+    max-width: 14px;
+  }
+}
+.editor-loading {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 13px;
+  color: var(--muted);
+}

@@ -1,0 +1,143 @@
+.editor-workspace {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--paper);
+}
+.editor-workspace.with-preview:not(.compact-preview) {
+  grid-template-columns: minmax(260px, var(--editor-fr)) 9px minmax(
+      260px,
+      var(--preview-fr)
+    );
+}
+.live-editor-pane,
+.live-preview-pane {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.editor-workspace [hidden] {
+  display: none;
+}
+.live-editor-content {
+  flex: 1;
+  min-height: 0;
+}
+.editor-pane-heading {
+  height: 39px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 20px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--sidebar) 35%, var(--paper));
+  font-size: 11px;
+}
+.editor-pane-heading small {
+  font-size: 10px;
+  font-weight: 400;
+}
+.editor-pane-heading > button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 6px;
+  border-radius: 4px;
+}
+.editor-pane-heading > button:hover {
+  background: var(--hover);
+}
+.editor-pane-heading > button[aria-pressed="true"] {
+  color: var(--accent);
+}
+.live-preview-viewport {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+}
+.live-preview-body.markdown-body {
+  padding: 30px 30px 100px;
+  max-width: calc(var(--reading-width, 800px) + 60px);
+  animation: none;
+}
+.live-preview-body pre {
+  max-width: 100%;
+}
+.live-preview-body .table-scroll {
+  max-width: 100%;
+}
+.preview-divider {
+  cursor: col-resize;
+  touch-action: none;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background: var(--paper);
+  outline-offset: -2px;
+}
+.preview-divider > span {
+  width: 1px;
+  background: var(--line);
+  transition:
+    width 0.14s,
+    background 0.14s;
+}
+.preview-divider:hover > span,
+.preview-divider:focus-visible > span,
+.preview-divider:active > span {
+  width: 3px;
+  background: var(--accent);
+}
+.compact-preview-tabs {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 7px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.compact-preview-tabs button {
+  color: var(--muted);
+  font-size: 12px;
+  padding: 6px 15px;
+  border-radius: 5px;
+}
+.compact-preview-tabs button[aria-selected="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.editor-workspace.compact-preview.with-preview {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.compact-preview .editor-pane-heading {
+  padding: 0 20px;
+}
+.compact-preview .live-preview-body {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.preview-warning {
+  margin: 12px 20px 0;
+  padding: 9px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--error);
+  background: var(--error-bg);
+  border-radius: 5px;
+}
+.toolbar .preview-toggle {
+  gap: 5px;
+  padding: 0 8px;
+}
+.toolbar .preview-toggle[aria-pressed="true"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+}

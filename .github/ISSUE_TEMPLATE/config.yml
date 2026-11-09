@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 私下报告安全漏洞
+    url: https://github.com/wylycool/argus/security/advisories/new
+    about: 请勿在公开 Issue 中披露可利用细节或私人数据。

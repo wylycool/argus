@@ -1,0 +1,184 @@
+.mermaid-measure {
+  position: fixed;
+  left: -100000px;
+  top: 0;
+  width: 1200px;
+  visibility: hidden;
+  pointer-events: none;
+  font-family: "PingFang SC", sans-serif;
+}
+.diagram-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.diagram-expand {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.diagram-expand:not(:disabled):hover {
+  background: var(--hover);
+  color: var(--text);
+}
+.mermaid-block {
+  background: var(--surface);
+}
+.mermaid-stage {
+  padding: 22px;
+  overflow: auto;
+  max-height: 620px;
+  min-height: 150px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  isolation: isolate;
+}
+.mermaid-stage[data-rendered="true"] {
+  cursor: zoom-in;
+}
+.mermaid-stage > svg {
+  display: block;
+  flex-shrink: 0;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.diagram-message {
+  font:
+    13px/1.8 -apple-system,
+    "PingFang SC",
+    sans-serif;
+  color: var(--muted);
+  margin: auto;
+  padding: 24px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.diagram-error {
+  color: var(--error);
+  margin: 0;
+  padding: 5px 0;
+}
+.markdown-body details.mermaid-source {
+  font:
+    12px/1.7 -apple-system,
+    "PingFang SC",
+    sans-serif;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 10px 16px;
+}
+.markdown-body .mermaid-source[open] summary {
+  margin-bottom: 8px;
+}
+.markdown-body .mermaid-source pre {
+  font:
+    12px/1.75 Menlo,
+    monospace;
+  border-radius: 5px;
+  padding: 15px;
+  background: var(--code);
+}
+.mermaid-block .code-toolbar {
+  padding-bottom: 7px;
+}
+.diagram-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  padding: 26px;
+  display: flex;
+  background: #0007;
+  backdrop-filter: blur(5px);
+}
+.diagram-viewer {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  background: var(--paper);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 16px 70px #0003;
+  animation: page-enter 0.2s ease-out;
+  overflow: hidden;
+}
+.diagram-viewer-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  gap: 12px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.diagram-viewer-toolbar > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.diagram-zoom {
+  font-size: 11px;
+  color: var(--muted);
+  width: 64px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.diagram-viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 28px;
+  display: flex;
+  align-items: flex-start;
+}
+.diagram-zoom-content {
+  flex-shrink: 0;
+  margin: auto;
+  isolation: isolate;
+}
+.diagram-zoom-content > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+.diagram-viewer-error {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.8;
+  padding: 20px;
+  color: var(--error);
+}
+@media (max-width: 760px) {
+  .diagram-overlay {
+    padding: 12px;
+  }
+  .diagram-viewer-toolbar {
+    padding: 10px;
+    gap: 5px;
+  }
+  .diagram-viewer-toolbar > span {
+    font-size: 12px;
+  }
+  .diagram-viewer-toolbar > div {
+    gap: 2px;
+  }
+  .diagram-viewport {
+    padding: 16px;
+  }
+  .mermaid-stage {
+    padding: 16px;
+  }
+}
+.code-block.mermaid-block {
+  background: var(--surface);
+}

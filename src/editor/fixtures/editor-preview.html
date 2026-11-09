@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="/favicon.png" />
+    <title>Argus 编辑界面验收</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import {
+        mockIPC,
+        mockWindows,
+        mockConvertFileSrc,
+      } from "/node_modules/@tauri-apps/api/mocks.js";
+      import { emit } from "/node_modules/@tauri-apps/api/event.js";
+      window.isTauri = true;
+      const keepSettings = new URLSearchParams(location.search).has(
+        "keepSettings",
+      );
+      if (!keepSettings) localStorage.removeItem("argus.preferences.v1");
+      const chosenTheme = new URLSearchParams(location.search).get("theme");
+      if (
+        [
+          "light",
+          "dark",
+          "white",
+          "lavender",
+          "matte",
+          "mist",
+          "graphite",
+          "dawn",
+        ].includes(chosenTheme) &&
+        !keepSettings
+      )
+        localStorage.setItem(
+          "argus.preferences.v1",
+          JSON.stringify({
+            theme: chosenTheme,
+            lastLightTheme: ["dark", "graphite"].includes(chosenTheme)
+              ? "light"
+              : chosenTheme,
+            lastDarkTheme: ["dark", "graphite"].includes(chosenTheme)
+              ? chosenTheme
+              : "dark",
+          }),
+        );
+      mockWindows("main");
+      mockConvertFileSrc("macos");
+      const livePreview = new URLSearchParams(location.search).has(
+        "livePreview",
+      );
+      if (livePreview && !keepSettings) {
+        const prefs = JSON.parse(
+          localStorage.getItem("argus.preferences.v1") || "{}",
+        );
+        localStorage.setItem(
+          "argus.preferences.v1",
+          JSON.stringify({
+            ...prefs,
+            editorPreview: { enabled: true, ratio: 0.5, sync: true },
+          }),
+        );
+      }
+      const path = "/文档/阅读笔记.md";
+      const files = new Map([
+        [
+          path,
+          {
+            path,
+            name: "阅读笔记.md",
+            content:
+              '# 留下此刻的想法\n\n阅读让文字成为自己的东西，写下笔记则让想法留下痕迹。\n\n## 今天读到的句子\n\n> 慢一点，再看清楚一点。\n\n- 记住一个值得回味的观点\n- 用自己的话重新表达\n- 把下一步行动写下来\n\n## 一段代码\n\n```typescript\nconst note = { title: "阅读笔记", saved: true };\n```\n',
+            version: "v1",
+            draft: null,
+          },
+        ],
+      ]);
+      if (new URLSearchParams(location.search).get("diagram") === "1")
+        files.get(path).content +=
+          "\n## 阅读与记录\n\n```mermaid\nflowchart TD\n A[打开笔记]-->B{选择阅读方式}\n B-->|专注阅读|C[阅读正文]\n B-->|补充想法|D[编辑内容]\n D-->E[自动保存]\n```\n";
+      const drafts = new Map();
+      if (new URLSearchParams(location.search).get("workspace") === "1") {
+        files.get(path).content =
+          "# 工作区阅读笔记\n\n[阅读下一篇](下一篇.md)\n\n## 阅读计划\n\n这一段记录阅读的起点。\n\n### 第一部分\n\n可以折叠这个章节的大纲。\n\n### 第二部分\n\n阅读中的想法可以随时记下。\n\n## 一张示意图\n\n![阅读风景](http://127.0.0.1:1420/samples/assets/landscape.svg)\n\n" +
+          Array.from(
+            { length: 8 },
+            (_, i) =>
+              `## 随笔 ${i + 1}\n\n阅读给日常留下一点空间。把此刻的想法记下来，下次从这里继续。\n\n`,
+          ).join("");
+        for (const [name, content] of [
+          [
+            "下一篇.md",
+            "# 下一篇笔记\n\n[继续阅读](第三篇.md)\n\n## 摘录\n\n这是下一篇笔记的内容。\n",
+          ],
+          [
+            "第三篇.md",
+            "# 第三篇笔记\n\n## 总结\n\n可以用返回按钮回到此前的文档和位置。\n",
+          ],
+        ]) {
+          const p = "/文档/" + name;
+          files.set(p, { path: p, name, content, version: "v1", draft: null });
+        }
+      }
+      if (livePreview)
+        files.get(path).content = [
+          "# 让文字，即刻成形",
+          "",
+          "一边记录，一边看见结果。**表格、代码与图表**会跟随输入更新。",
+          "",
+          "## 今天的计划",
+          "",
+          "- [x] 打开一份文档",
+          "- [x] 开启实时预览",
+          "- [ ] 留下一点新的想法",
+          "",
+          "## 把信息放在一起",
+          "",
+          "| 内容 | 编辑 | 预览 |",
+          "| :--- | :--- | :--- |",
+          "| Markdown | 直接输入 | 即时呈现 |",
+          "| Mermaid | 描述关系 | 绘制图表 |",
+          "",
+          "## 阅读与记录",
+          "",
+          "```mermaid",
+          "flowchart LR",
+          " A[打开文档] --> B[记录想法]",
+          " B --> C[实时预览]",
+          " C --> D[自动保存]",
+          "```",
+          "",
+          "## 一段代码",
+          "",
+          "```typescript",
+          'const note = { title: "此刻的想法", preview: true };',
+          "```",
+          "",
+          "> 阅读留给思考，预览交给 Argus。",
+          "",
+          "![阅读风景](http://127.0.0.1:1420/samples/assets/landscape.svg)",
+          "",
+          ...Array.from(
+            { length: 18 },
+            (_, i) =>
+              `## 随笔 ${i + 1}\n\n把文字写下来，再慢慢整理。编辑与预览按段落联动，也可以关闭联动分别阅读。\n`,
+          ),
+        ].join("\n");
+      if (new URLSearchParams(location.search).get("readonly") === "1")
+        files.get(path).writable = false;
+      const incoming = [];
+      window.__ARGUS_OPEN_FILES__ = async (paths) => {
+        incoming.push(...paths);
+        await emit("files-opened");
+      };
+      let pending = true;
+      let revision = 1;
+      const mode = new URLSearchParams(location.search).get("failure");
+      window.__ARGUS_TEST_FILES__ = files;
+      const historyEntries =
+        new URLSearchParams(location.search).get("history") === "1"
+          ? [
+              {
+                id: "preview-old",
+                createdAt: Date.now() - 3600000,
+                bytes: 80,
+                version: "v-old",
+                reason: "编辑前",
+                content: "# 阅读笔记\n\n这是编辑前保留的内容。\n",
+              },
+            ]
+          : [];
+      window.__ARGUS_SIMULATE_EXTERNAL__ = () => {
+        const file = files.get(path);
+        file.content += "\n\n外部修改后的内容。";
+        file.version = "external-" + Date.now();
+        window.dispatchEvent(new Event("focus"));
+      };
+      mockIPC(
+        async (command, args = {}) => {
+          if (command === "probe_document") {
+            const file = files.get(args.path);
+            return {
+              status: !file
+                ? "missing"
+                : file.version === args.version
+                  ? "unchanged"
+                  : "changed",
+              version: file?.version ?? null,
+              writable: file?.writable !== false,
+            };
+          }
+          if (command === "cancel_document_search") return;
+          if (command === "search_documents") {
+            window.__ARGUS_SEARCHED_PATHS__ = args.paths;
+            const hits = [],
+              failures = [];
+            let searched = 0;
+            const q = args.query.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            for (const p of args.paths) {
+              const file = files.get(p),
+                current = args.buffer?.path === p ? args.buffer : null;
+              if (!file && !current) {
+                failures.push({ path: p, message: "文件不存在" });
+                continue;
+              }
+              searched++;
+              const text = current?.text ?? file.content;
+              let count = 0;
+              text.split(/\r\n?|\n/).forEach((line, index) => {
+                const expression = new RegExp(q, "gi");
+                for (const found of line.matchAll(expression)) {
+                  if (count++ >= 25 || hits.length >= 500) break;
+                  hits.push({
+                    path: p,
+                    name: p.split("/").at(-1),
+                    version: current?.version ?? file.version,
+                    line: index + 1,
+                    column: found.index,
+                    length: found[0].length,
+                    matched: found[0],
+                    before: line.slice(
+                      Math.max(0, found.index - 55),
+                      found.index,
+                    ),
+                    after: line.slice(
+                      found.index + found[0].length,
+                      found.index + found[0].length + 90,
+                    ),
+                    buffer: Boolean(current),
+                  });
+                }
+              });
+            }
+            return {
+              hits,
+              failures,
+              searched,
+              total: args.paths.length,
+              truncated: false,
+              cancelled: false,
+            };
+          }
+          if (command === "list_history")
+            return historyEntries.map(({ content, ...entry }) => entry);
+          if (command === "preview_history") {
+            const entry = historyEntries.find((e) => e.id === args.id);
+            if (!entry) throw { message: "版本不存在" };
+            return { content: entry.content };
+          }
+          if (command === "restore_history") {
+            const file = files.get(args.path);
+            if (file.version !== args.expectedVersion)
+              throw { code: "conflict", message: "文件已在外部修改，未恢复。" };
+            const selected = historyEntries.find((e) => e.id === args.id);
+            historyEntries.unshift({
+              id: "before-restore-" + Date.now(),
+              createdAt: Date.now(),
+              bytes: file.content.length,
+              version: file.version,
+              reason: "恢复前",
+              content: file.content,
+            });
+            file.content = selected.content;
+            file.version = "v" + ++revision;
+            return { version: file.version };
+          }
+          if (command === "new_document") {
+            let n = 1;
+            let p;
+            do {
+              p = `/Users/test/Library/Application Support/app.argus.reader/untitled/未命名 ${n++}.md`;
+            } while (files.has(p));
+            const result = {
+              path: p,
+              name: p.split("/").at(-1),
+              content: "",
+              version: "new-" + ++revision,
+              untitled: true,
+              draft: null,
+              writable: true,
+            };
+            files.set(p, result);
+            return result;
+          }
+          if (command === "list_untitled")
+            return [...files.keys()].filter((p) => p.includes("/untitled/"));
+          if (command === "remove_untitled") {
+            files.delete(args.path);
+            return;
+          }
+          if (command === "insert_image") {
+            if (window.__ARGUS_IMAGE_WAIT__)
+              return new Promise((resolve) => {
+                window.__ARGUS_IMAGE_COMPLETE__ = () =>
+                  resolve("assets/picture.png");
+              });
+            return "assets/picture.png";
+          }
+          if (command === "watch_document") return;
+          if (command === "print_document") {
+            window.__ARGUS_PRINTED__ =
+              document.querySelector(".print-document")?.innerHTML;
+            return;
+          }
+          if (command === "history_usage")
+            return {
+              totalBytes: historyEntries.reduce((n, e) => n + e.bytes, 0),
+              totalVersions: historyEntries.length,
+              documentBytes: historyEntries.reduce((n, e) => n + e.bytes, 0),
+              documentVersions: historyEntries.length,
+            };
+          if (command === "clear_history") {
+            if (args.id) {
+              const i = historyEntries.findIndex((e) => e.id === args.id);
+              if (i >= 0) historyEntries.splice(i, 1);
+            } else historyEntries.length = 0;
+            return;
+          }
+          if (command === "take_pending_files") {
+            if (pending) {
+              pending = false;
+              return [path];
+            }
+            return incoming.splice(0);
+          }
+          if (command === "read_document") {
+            const resolved = args.path.startsWith("/")
+              ? args.path
+              : decodeURIComponent(
+                  new URL(args.path, "file://" + (args.base || path)).pathname,
+                );
+            const file = files.get(resolved);
+            if (!file) throw { message: "文件不存在：" + resolved };
+            return {
+              ...file,
+              draft: drafts.get(resolved) ?? null,
+            };
+          }
+          if (command === "write_draft") {
+            drafts.set(args.draft.path, { ...args.draft });
+            return;
+          }
+          if (command === "clear_draft") {
+            const d = drafts.get(args.path);
+            if (d?.sessionId === args.sessionId && d.revision <= args.revision)
+              drafts.delete(args.path);
+            return;
+          }
+          if (command === "save_document") {
+            if (mode === "permission")
+              throw {
+                code: "permission",
+                message: "文件为只读，无法保存。编辑内容已保留，可另存副本。",
+              };
+            if (mode === "conflict")
+              throw {
+                code: "conflict",
+                message:
+                  "文件已被其他程序修改，已暂停自动保存。请另存副本，或重新读取磁盘文件。",
+              };
+            const file = files.get(args.draft.path);
+            if (file.version !== args.draft.baseVersion)
+              throw {
+                code: "conflict",
+                message: "文件已在外部修改，已暂停保存。",
+              };
+            if (!historyEntries.some((e) => e.session === args.draft.sessionId))
+              historyEntries.unshift({
+                id: "before-edit-" + Date.now(),
+                createdAt: Date.now(),
+                bytes: file.content.length,
+                version: file.version,
+                reason: "编辑前",
+                content: file.content,
+                session: args.draft.sessionId,
+              });
+            file.content = args.draft.text;
+            file.version = "v" + ++revision;
+            return { version: file.version };
+          }
+          if (command === "plugin:dialog|open") {
+            const result = window.__ARGUS_NEXT_OPEN__ ?? null;
+            window.__ARGUS_NEXT_OPEN__ = null;
+            return result;
+          }
+          if (command === "plugin:dialog|save") {
+            const result = window.__ARGUS_SAVE_DESTINATION__ ?? null;
+            window.__ARGUS_SAVE_DESTINATION__ = null;
+            return result;
+          }
+          if (command === "save_copy") {
+            if (files.has(args.path))
+              throw {
+                code: "exists",
+                message: "副本文件名已存在，请换一个文件名。",
+              };
+            files.set(args.path, {
+              path: args.path,
+              name: args.path.split("/").at(-1),
+              content: args.content,
+              version: "v" + ++revision,
+              draft: null,
+              writable: true,
+            });
+            return { version: files.get(args.path).version };
+          }
+          if (command === "reveal_document") {
+            window.__ARGUS_REVEALED__ = args.path;
+            return;
+          }
+        },
+        { shouldMockEvents: true },
+      );
+      await import("/src/main.tsx");
+      if (new URLSearchParams(location.search).get("edit") === "1") {
+        const enter = () => {
+          const button = document.querySelector('[aria-label="编辑文档"]');
+          if (button && !button.disabled) {
+            observer.disconnect();
+            button.click();
+          }
+        };
+        const observer = new MutationObserver(enter);
+        observer.observe(document.getElementById("root"), {
+          childList: true,
+          subtree: true,
+          attributes: true,
+        });
+        enter();
+      }
+    </script>
+  </body>
+</html>
